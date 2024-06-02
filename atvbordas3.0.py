@@ -42,23 +42,20 @@ def adjacencia_8(imagem):
             else:
                 matriz_adjacencia[y][x] = cor_fundo
     return matriz_adjacencia
-
 def m_adjacencia(imagem):               #Se uma diagonal estiver tingida o pixel em questão não pode estar pode estar, pois causaria conflito de adjacências-4
-    matriz_temporaria = adjacencia_4(imagem)
+    matriz_temporaria = adjacencia_4(imagem)            #Correção: Basta aplicar a diagonal, apenas quando não houver adjacência-4
     altura = len(imagem)
     largura = len(imagem[0])
     matriz_adjacencia = [[0] * largura for each in range(altura)]
-    fundo = matriz_temporaria[0][0]    
+    fundo = imagem[0][0]    
     for y in range(altura):
         for x in range(largura):
-            if matriz_temporaria[y][x] != fundo  and (y < altura - 1 and x < largura - 1) and (y > 0 and x > 0) and (matriz_temporaria[y-1][x] != fundo or matriz_temporaria[y+1][x] != fundo or matriz_temporaria[y][x-1] != fundo or matriz_temporaria[y][x+1] != fundo):
-                matriz_adjacencia[y][x] = matriz_temporaria[y][x]
-                
-                if (matriz_temporaria[y-1][x-1] != fundo or matriz_temporaria[y-1][x+1] != fundo or matriz_temporaria[y+1][x-1] != fundo or matriz_temporaria[y+1][x+1] != fundo):
-                    matriz_adjacencia[y][x] = fundo
-            else:
-                matriz_adjacencia[y][x] = fundo
-                
+            if matriz_temporaria[y][x] != fundo  and (y < altura - 1 and x < largura - 1) and (y > 0 and x > 0) and (imagem[y-1][x] != fundo or imagem[y+1][x] != fundo or imagem[y][x-1] != fundo or imagem[y][x+1] != fundo):
+                matriz_adjacencia[y][x] = imagem[y][x]
+            elif matriz_temporaria[y][x] != fundo  and (y < altura - 1 and x < largura - 1) and (y > 0 and x > 0) and (imagem[y-1][x-1] != fundo or imagem[y+1][x+1] != fundo or imagem[y-1][x+1] != fundo or imagem[y+1][x-1] != fundo):
+                matriz_adjacencia[y][x] = imagem[y][x]
+            if matriz_temporaria[y][x] != fundo and (y < altura - 1 and x < largura - 1) and (y > 0 and x > 0) and (matriz_temporaria[y-1][x-1] != fundo and matriz_temporaria[y+1][+1] != fundo and matriz_temporaria[y+1][x-1] != fundo and matriz_temporaria[y-1][x+1] != fundo):
+                matriz_adjacencia[y][x] = fundo                
     return matriz_adjacencia
 
 def mostrar_imagem_gerada(matriz):
